@@ -7,19 +7,24 @@ const path = require('path');
 const app = express();
 
 app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/outputs', express.static(path.join(__dirname, 'outputs')));
 
-app.use('/api/convert', require('./routes/convert'));
-app.use('/api/merge', require('./routes/merge'));
+app.get('/', (req, res) => {
+  res.send('EasyMerge Backend Running');
+});
 
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
   });
 });
+
+app.use('/api/convert', require('./routes/convert'));
+app.use('/api/merge', require('./routes/merge'));
 
 const PORT = process.env.PORT || 5000;
 
